@@ -13,6 +13,13 @@ sampler ColorSampler = sampler_state
         Texture = <ColorMap>;     
 };
 
+uniform extern texture OccMap;  
+sampler OccMapSampler = sampler_state
+{
+        Texture = <OccMap>;     
+};
+
+
 float2 LightPosition = float2(0.51, 0.5);
 float decay= 0.9999;
 float exposure=0.23;
@@ -35,7 +42,7 @@ float4 PixelShaderFunction(float2 texCoord : TEXCOORD0) : COLOR0
 	for (int i = 0; i < NUM_SAMPLES; i++)
 	{
 		tc -= deltaTexCoord;
-		float4 sample = tex2D(UserMapSampler, tc) * 0.2;
+		float4 sample = tex2D(OccMapSampler, tc) * tex2D(UserMapSampler, tc) * 0.2;
 		sample *= illuminationDecay * weight;
 		color += sample;//  * float4(1,0,0,1); Multiply by colour here to change light colour
 		illuminationDecay *= decay;
