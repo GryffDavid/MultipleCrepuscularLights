@@ -70,7 +70,7 @@ namespace MultipleCrepuscularTest1
                 Decay = 0.9999f,
                 Exposure = 0.23f,
                 Density = 0.826f,
-                Weight = 0.358767f
+                Weight = 0.5358767f
             });
 
             CrepLightList.Add(new CrepuscularLight()
@@ -79,7 +79,7 @@ namespace MultipleCrepuscularTest1
                 Decay = 0.9999f,
                 Exposure = 0.23f,
                 Density = 0.826f,
-                Weight = 0.358767f
+                Weight = 0.2358767f
             });
 
             CrepuscularEffect = Content.Load<Effect>("Crepuscular");
