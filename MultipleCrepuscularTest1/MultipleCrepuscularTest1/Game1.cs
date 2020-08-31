@@ -168,7 +168,7 @@ namespace MultipleCrepuscularTest1
             spriteBatch.Begin();
             foreach (Sprite sprite in SpriteList)
             {
-                sprite.Draw(spriteBatch, Color.Black);
+                sprite.Draw(spriteBatch, Color.MediumPurple);
             }
             spriteBatch.End(); 
             #endregion
@@ -205,7 +205,7 @@ namespace MultipleCrepuscularTest1
                     spriteBatch.Begin(SpriteSortMode.Immediate, BlendBlack);
                     CrepuscularEffect.CurrentTechnique.Passes[0].Apply();
 
-                    spriteBatch.Draw(CrepuscularLightMap1, CrepuscularLightMap1.Bounds, Color.Red);
+                    spriteBatch.Draw(CrepuscularLightMap1, CrepuscularLightMap1.Bounds, Color.White);
                     spriteBatch.End();
 
                 }
@@ -225,6 +225,7 @@ namespace MultipleCrepuscularTest1
 
             spriteBatch.Begin();
             spriteBatch.Draw(Buffer2, Buffer1.Bounds, Color.White);
+            //spriteBatch.Draw(CrepuscularColorMap, CrepuscularColorMap.Bounds, Color.White);
             spriteBatch.End();
             #endregion
 
