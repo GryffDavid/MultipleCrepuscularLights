@@ -30,6 +30,17 @@ namespace MultipleCrepuscularTest1
 
         List<Sprite> SpriteList = new List<Sprite>();
 
+        public static BlendState BlendBlack = new BlendState()
+        {
+            ColorBlendFunction = BlendFunction.Add,
+            ColorSourceBlend = Blend.One,
+            ColorDestinationBlend = Blend.One,
+
+            AlphaBlendFunction = BlendFunction.Add,
+            AlphaSourceBlend = Blend.SourceAlpha,
+            AlphaDestinationBlend = Blend.One
+        };
+
         public Game1()
         {
             graphics = new GraphicsDeviceManager(this);
@@ -156,12 +167,17 @@ namespace MultipleCrepuscularTest1
 
             #region Multimap
             GraphicsDevice.SetRenderTarget(MultiMap);
-            GraphicsDevice.Clear(Color.Black);
+            GraphicsDevice.Clear(Color.Transparent);
 
-            Effect1.Parameters["ColorMap"].SetValue(CrepuscularLightMap);
+            for (int i = 0; i < 10; i++)
+            {
 
-            Effect1.CurrentTechnique.Passes[0].Apply();
-            GraphicsDevice.DrawUserPrimitives(PrimitiveType.TriangleStrip, CrepVertices, 0, 2); 
+                Effect1.Parameters["ColorMap"].SetValue(CrepuscularLightMap);
+                Effect1.CurrentTechnique.Passes[0].Apply();
+
+                GraphicsDevice.BlendState = BlendBlack;
+                GraphicsDevice.DrawUserPrimitives(PrimitiveType.TriangleStrip, CrepVertices, 0, 2);
+            }
             #endregion
 
             #region BackBuffer
@@ -189,9 +205,6 @@ namespace MultipleCrepuscularTest1
             //    GraphicsDevice.DrawUserPrimitives(PrimitiveType.TriangleStrip, CrepVertices, 0, 2);
             //    //spriteBatch.End();
             //}
-
-            
-
             base.Draw(gameTime);
         }
     }
