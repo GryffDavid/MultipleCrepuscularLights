@@ -73,14 +73,14 @@ namespace MultipleCrepuscularTest1
                 Weight = 0.358767f
             });
 
-            //CrepLightList.Add(new CrepuscularLight()
-            //{
-            //    Position = new Vector2(1280 / 2, 720 / 2),
-            //    Decay = 0.9999f,
-            //    Exposure = 0.23f,
-            //    Density = 0.826f,
-            //    Weight = 0.358767f
-            //});
+            CrepLightList.Add(new CrepuscularLight()
+            {
+                Position = new Vector2(1280 / 2, 720 / 2),
+                Decay = 0.9999f,
+                Exposure = 0.23f,
+                Density = 0.826f,
+                Weight = 0.358767f
+            });
 
 
             CrepuscularEffect = Content.Load<Effect>("Crepuscular");
@@ -98,13 +98,27 @@ namespace MultipleCrepuscularTest1
             CrepuscularLightMap = new RenderTarget2D(GraphicsDevice, 1280, 720);
             MultiMap = new RenderTarget2D(GraphicsDevice, 1280, 720);
             OcclusionMap = new RenderTarget2D(GraphicsDevice, 1280, 720);
+            
+            //ORIGINAL
+            //CrepVertices = new VertexPositionColorTexture[4];
+            //CrepVertices[0] = new VertexPositionColorTexture(new Vector3(-1, 1, 0), Color.White, new Vector2(0, 0));
+            //CrepVertices[1] = new VertexPositionColorTexture(new Vector3(1, 1, 0), Color.White, new Vector2(1, 0));
+            //CrepVertices[2] = new VertexPositionColorTexture(new Vector3(-1, -1, 0), Color.White, new Vector2(0, 1));
+            //CrepVertices[3] = new VertexPositionColorTexture(new Vector3(1, -1, 0), Color.White, new Vector2(1, 1));
 
+            //WITHOUT PROJECTION TOP LEFT CORNER
+            //CrepVertices = new VertexPositionColorTexture[4];
+            //CrepVertices[0] = new VertexPositionColorTexture(new Vector3(-1, 1, 0), Color.White, new Vector2(0, 0));
+            //CrepVertices[1] = new VertexPositionColorTexture(new Vector3(0, 1, 0), Color.White, new Vector2(1, 0));
+            //CrepVertices[2] = new VertexPositionColorTexture(new Vector3(-1, 0, 0), Color.White, new Vector2(0, 1));
+            //CrepVertices[3] = new VertexPositionColorTexture(new Vector3(0, 0, 0), Color.White, new Vector2(1, 1));
 
             CrepVertices = new VertexPositionColorTexture[4];
-            CrepVertices[0] = new VertexPositionColorTexture(new Vector3(-1, 1, 0), Color.White, new Vector2(0, 0));
-            CrepVertices[1] = new VertexPositionColorTexture(new Vector3(1, 1, 0), Color.White, new Vector2(1, 0));
-            CrepVertices[2] = new VertexPositionColorTexture(new Vector3(-1, -1, 0), Color.White, new Vector2(0, 1));
-            CrepVertices[3] = new VertexPositionColorTexture(new Vector3(1, -1, 0), Color.White, new Vector2(1, 1));
+            CrepVertices[0] = new VertexPositionColorTexture(new Vector3(0, 0, 0), Color.White, new Vector2(0, 0));
+            CrepVertices[1] = new VertexPositionColorTexture(new Vector3(1280, 0, 0), Color.White, new Vector2(1, 0));
+            CrepVertices[2] = new VertexPositionColorTexture(new Vector3(0, 720, 0), Color.White, new Vector2(0, 1));
+            CrepVertices[3] = new VertexPositionColorTexture(new Vector3(1280, 720, 0), Color.White, new Vector2(1, 1));
+
 
             Projection = Matrix.CreateOrthographicOffCenter(0, 1280, 720, 0, -10, 10);
 
@@ -169,15 +183,33 @@ namespace MultipleCrepuscularTest1
             GraphicsDevice.SetRenderTarget(MultiMap);
             GraphicsDevice.Clear(Color.Transparent);
 
-            for (int i = 0; i < 10; i++)
+            foreach (CrepuscularLight light in CrepLightList)
             {
-
-                Effect1.Parameters["ColorMap"].SetValue(CrepuscularLightMap);
+                Effect1.Parameters["ColorMap"].SetValue(Flare);
+                Effect1.Parameters["Projection"].SetValue(Projection);
                 Effect1.CurrentTechnique.Passes[0].Apply();
 
+                CrepVertices[0].Position = new Vector3(light.Position.X, light.Position.Y, 0);
+                CrepVertices[1].Position = new Vector3(light.Position.X + Flare.Width, light.Position.Y, 0);
+                CrepVertices[2].Position = new Vector3(light.Position.X, light.Position.Y + Flare.Height, 0);
+                CrepVertices[3].Position = new Vector3(light.Position.X + Flare.Width, light.Position.Y + Flare.Height, 0);
+
+
                 GraphicsDevice.BlendState = BlendBlack;
+                GraphicsDevice.RasterizerState = RasterizerState.CullNone;
                 GraphicsDevice.DrawUserPrimitives(PrimitiveType.TriangleStrip, CrepVertices, 0, 2);
             }
+
+            //for (int i = 0; i < 1; i++)
+            //{
+            //    Effect1.Parameters["ColorMap"].SetValue(Flare);
+            //    Effect1.Parameters["Projection"].SetValue(Projection);
+            //    Effect1.CurrentTechnique.Passes[0].Apply();
+
+            //    GraphicsDevice.BlendState = BlendBlack;
+            //    GraphicsDevice.RasterizerState = RasterizerState.CullNone;
+            //    GraphicsDevice.DrawUserPrimitives(PrimitiveType.TriangleStrip, CrepVertices, 0, 2);
+            //}
             #endregion
 
             #region BackBuffer

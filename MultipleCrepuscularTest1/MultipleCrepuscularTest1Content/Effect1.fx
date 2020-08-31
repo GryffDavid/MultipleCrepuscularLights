@@ -1,5 +1,8 @@
+float4x4 Projection;
+
 Texture ColorMap;
-sampler ColorMapSampler = sampler_state {
+sampler ColorMapSampler = sampler_state 
+{
 	texture = <ColorMap>;
 	magfilter = LINEAR;
 	minfilter = LINEAR;
@@ -10,7 +13,7 @@ sampler ColorMapSampler = sampler_state {
 
 struct VertexToPixel
 {
-	float4 Position : POSITION;
+	float4 Position : POSITION0;
 	float2 TexCoord : TEXCOORD0;
 	float4 Color : COLOR0;
 };
@@ -23,8 +26,9 @@ struct PixelToFrame
 VertexToPixel MyVertexShader(float4 inPos: POSITION0, float2 texCoord: TEXCOORD0, float4 color: COLOR0)
 {
 	VertexToPixel Output = (VertexToPixel)0;
-	
-	Output.Position = inPos;
+
+	//Output.Position = inPos;
+	Output.Position = mul(inPos, Projection);
 	Output.TexCoord = texCoord;
 	Output.Color = color;
 	
