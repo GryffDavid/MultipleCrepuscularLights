@@ -92,7 +92,7 @@ namespace MultipleCrepuscularTest1
                 SpriteList.Add(new Sprite(new Vector2(Random.Next(50, 1270), Random.Next(50, 670)), new Vector2(32, 32), Box));
             }
 
-            SpriteList.Add(new Sprite(new Vector2(200, 200), new Vector2(32, 32), Box));
+            SpriteList.Add(new Sprite(new Vector2(180, 230), new Vector2(32, 32), Box));
 
 
             CrepuscularColorMap = new RenderTarget2D(GraphicsDevice, 1280, 720);
@@ -143,14 +143,14 @@ namespace MultipleCrepuscularTest1
             //spriteBatch.Draw(Background, Background.Bounds, Color.White);
             foreach (Sprite sprite in SpriteList)
             {
-                sprite.Draw(spriteBatch, Color.White);
+                sprite.Draw(spriteBatch, Color.Black);
             }
             spriteBatch.End();
 
 
 
             GraphicsDevice.SetRenderTarget(CrepuscularLightMap);
-            GraphicsDevice.Clear(Color.Transparent);
+            GraphicsDevice.Clear(Color.Black);
             spriteBatch.Begin();
             foreach (CrepuscularLight light in CrepLightList)
             {
@@ -185,8 +185,8 @@ namespace MultipleCrepuscularTest1
                 spriteBatch.End();
             }
 
-            ////GraphicsDevice.SetRenderTarget(null);
-            ////GraphicsDevice.Clear(Color.White);
+            //GraphicsDevice.SetRenderTarget(null);
+            //GraphicsDevice.Clear(Color.White);
 
             //spriteBatch.Begin();
             //spriteBatch.Draw(CrepuscularLightMap, CrepuscularLightMap.Bounds, Color.White);

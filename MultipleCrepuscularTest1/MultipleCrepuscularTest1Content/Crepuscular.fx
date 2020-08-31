@@ -29,7 +29,8 @@ float4 PixelShaderFunction(float2 texCoord : TEXCOORD0) : COLOR0
 	deltaTexCoord *= 1.0 / float(NUM_SAMPLES) * density;
 	float illuminationDecay = 1.0;
 
-	float4 color = tex2D(UserMapSampler, tc.xy) * 0.2;
+	//float4 color = tex2D(UserMapSampler, tc.xy) * 0.2;
+	float4 color = float4(0, 0, 0, 1);
 
 	for (int i = 0; i < NUM_SAMPLES; i++)
 	{
@@ -43,7 +44,16 @@ float4 PixelShaderFunction(float2 texCoord : TEXCOORD0) : COLOR0
 	float4 realColor = tex2D(ColorSampler, texCoord.xy + offset);
 
 	//return realColor;
-	return ((float4((float3(color.r, color.g, color.b) * exposure), 1)) + (realColor * (1.1)));	
+	float thing = length(tc.xy - LightPosition.xy) * float2(1280, 720).xy;
+	if (thing < 80)
+	{
+		return ((float4((float3(color.r, color.g, color.b) * exposure), 1)) + (realColor * (1.1)));	
+	}
+	else
+	{
+		return tex2D(ColorSampler, texCoord.xy);
+	}
+	
 
 	//return tex2D(UserMapSampler, tc.xy);
 }
