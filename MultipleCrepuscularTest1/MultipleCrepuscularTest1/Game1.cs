@@ -16,7 +16,7 @@ namespace MultipleCrepuscularTest1
         GraphicsDeviceManager graphics;
         SpriteBatch spriteBatch;
         Texture2D Flare, Box, Background;
-        RenderTarget2D OcclusionMap, CrepuscularColorMap, CrepuscularLightMap;
+        RenderTarget2D OcclusionMap, CrepuscularColorMap, CrepuscularLightMap1, CrepuscularLightMap2, Buffer1, Buffer2;
 
         VertexPositionColorTexture[] CrepVertices;
 
@@ -89,14 +89,19 @@ namespace MultipleCrepuscularTest1
 
             for (int i = 0; i < 15; i++)
             {
-                SpriteList.Add(new Sprite(new Vector2(Random.Next(50, 1270), Random.Next(50, 670)), new Vector2(32, 32), Box));
+                SpriteList.Add(new Sprite(new Vector2(Random.Next(50, 1270), Random.Next(50, 670)), new Vector2(64, 64), Box));
             }
 
             SpriteList.Add(new Sprite(new Vector2(180, 230), new Vector2(32, 32), Box));
 
 
             CrepuscularColorMap = new RenderTarget2D(GraphicsDevice, 1280, 720);
-            CrepuscularLightMap = new RenderTarget2D(GraphicsDevice, 1280, 720);
+            CrepuscularLightMap1 = new RenderTarget2D(GraphicsDevice, 1280, 720);
+            CrepuscularLightMap2 = new RenderTarget2D(GraphicsDevice, 1280, 720);
+
+            Buffer1 = new RenderTarget2D(GraphicsDevice, 1280, 720);
+            Buffer2 = new RenderTarget2D(GraphicsDevice, 1280, 720);
+
             OcclusionMap = new RenderTarget2D(GraphicsDevice, 1280, 720);
 
 
@@ -126,6 +131,7 @@ namespace MultipleCrepuscularTest1
         
         protected override void Draw(GameTime gameTime)
         {
+            #region Occlusion Map
             GraphicsDevice.SetRenderTarget(OcclusionMap);
             GraphicsDevice.Clear(Color.Transparent);
             spriteBatch.Begin();
@@ -133,43 +139,56 @@ namespace MultipleCrepuscularTest1
             {
                 sprite.Draw(spriteBatch, Color.Black);
             }
-            spriteBatch.End();
+            spriteBatch.End(); 
+            #endregion
 
-
-
+            #region Crepuscular Color Map
             GraphicsDevice.SetRenderTarget(CrepuscularColorMap);
             GraphicsDevice.Clear(Color.Transparent);
             spriteBatch.Begin();
-            //spriteBatch.Draw(Background, Background.Bounds, Color.White);
             foreach (Sprite sprite in SpriteList)
             {
                 sprite.Draw(spriteBatch, Color.Black);
             }
-            spriteBatch.End();
+            spriteBatch.End(); 
+            #endregion
 
-
-
-            GraphicsDevice.SetRenderTarget(CrepuscularLightMap);
-            GraphicsDevice.Clear(Color.Black);
+            #region Crepuscular Light Map1
+            GraphicsDevice.SetRenderTarget(CrepuscularLightMap1);
+            GraphicsDevice.Clear(Color.Transparent);
             spriteBatch.Begin();
-            foreach (CrepuscularLight light in CrepLightList)
             {
-                spriteBatch.Draw(Flare,
-                    new Rectangle((int)(light.Position.X), (int)(light.Position.Y),
-                                  Flare.Width / 3, Flare.Height / 3), null,
-                    Color.Goldenrod, 0, new Vector2(Flare.Width / 2, Flare.Height / 2), SpriteEffects.None, 0);
-            }
+                CrepuscularLight light = CrepLightList[0];
 
+                spriteBatch.Draw(Flare, new Rectangle((int)(light.Position.X), (int)(light.Position.Y), Flare.Width / 3, Flare.Height / 3), null,
+                                 Color.Goldenrod, 0, new Vector2(Flare.Width / 2, Flare.Height / 2), SpriteEffects.None, 0);
+
+            }
+            spriteBatch.Draw(OcclusionMap, OcclusionMap.Bounds, Color.White);
+            spriteBatch.End(); 
+            #endregion
+
+            #region Crepuscular Light Map2
+            GraphicsDevice.SetRenderTarget(CrepuscularLightMap2);
+            GraphicsDevice.Clear(Color.Transparent);
+            spriteBatch.Begin();
+            {
+                CrepuscularLight light = CrepLightList[1];
+
+                spriteBatch.Draw(Flare, new Rectangle((int)(light.Position.X), (int)(light.Position.Y), Flare.Width / 3, Flare.Height / 3), null,
+                                 Color.Goldenrod, 0, new Vector2(Flare.Width / 2, Flare.Height / 2), SpriteEffects.None, 0);
+
+            }
             spriteBatch.Draw(OcclusionMap, OcclusionMap.Bounds, Color.White);
             spriteBatch.End();
+            #endregion
 
-
-
-            GraphicsDevice.SetRenderTarget(null);
-            GraphicsDevice.Clear(Color.Black);
-
-            foreach (CrepuscularLight light in CrepLightList)
+            #region Buffer1
+            GraphicsDevice.SetRenderTarget(Buffer1);
+            GraphicsDevice.Clear(Color.Transparent);
             {
+                CrepuscularLight light = CrepLightList[0];
+
                 CrepuscularEffect.Parameters["LightPosition"].SetValue(light.Position / new Vector2(1280, 720));
                 CrepuscularEffect.Parameters["decay"].SetValue(light.Decay);
                 CrepuscularEffect.Parameters["exposure"].SetValue(light.Exposure);
@@ -180,17 +199,42 @@ namespace MultipleCrepuscularTest1
                 spriteBatch.Begin(SpriteSortMode.Immediate, BlendBlack);
 
                 CrepuscularEffect.CurrentTechnique.Passes[0].Apply();
-                spriteBatch.Draw(CrepuscularLightMap, CrepuscularLightMap.Bounds, Color.White);
+                spriteBatch.Draw(CrepuscularLightMap1, CrepuscularLightMap1.Bounds, Color.White);
 
-                spriteBatch.End();
             }
+            spriteBatch.End(); 
+            #endregion
 
-            //GraphicsDevice.SetRenderTarget(null);
-            //GraphicsDevice.Clear(Color.White);
+            #region Buffer2
+            GraphicsDevice.SetRenderTarget(Buffer2);
+            GraphicsDevice.Clear(Color.Transparent);
+            {
+                CrepuscularLight light = CrepLightList[1];
 
-            //spriteBatch.Begin();
-            //spriteBatch.Draw(CrepuscularLightMap, CrepuscularLightMap.Bounds, Color.White);
-            //spriteBatch.End();
+                CrepuscularEffect.Parameters["LightPosition"].SetValue(light.Position / new Vector2(1280, 720));
+                CrepuscularEffect.Parameters["decay"].SetValue(light.Decay);
+                CrepuscularEffect.Parameters["exposure"].SetValue(light.Exposure);
+                CrepuscularEffect.Parameters["density"].SetValue(light.Density);
+                CrepuscularEffect.Parameters["weight"].SetValue(light.Weight);
+                CrepuscularEffect.Parameters["ColorMap"].SetValue(CrepuscularColorMap);
+
+                spriteBatch.Begin(SpriteSortMode.Immediate, BlendBlack);
+
+                CrepuscularEffect.CurrentTechnique.Passes[0].Apply();
+                spriteBatch.Draw(CrepuscularLightMap2, CrepuscularLightMap2.Bounds, Color.White);
+
+            }
+            spriteBatch.End();
+            #endregion
+
+
+            GraphicsDevice.SetRenderTarget(null);
+            GraphicsDevice.Clear(Color.Black);
+
+            spriteBatch.Begin(SpriteSortMode.Immediate, BlendState.Additive);
+            spriteBatch.Draw(Buffer1, Buffer1.Bounds, Color.White);
+            spriteBatch.Draw(Buffer2, Buffer1.Bounds, Color.White);
+            spriteBatch.End();
 
             base.Draw(gameTime);
         }

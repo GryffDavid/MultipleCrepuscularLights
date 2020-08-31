@@ -43,19 +43,7 @@ float4 PixelShaderFunction(float2 texCoord : TEXCOORD0) : COLOR0
 
 	float4 realColor = tex2D(ColorSampler, texCoord.xy + offset);
 
-	//return realColor;
-	float thing = length(tc.xy - LightPosition.xy) * float2(1280, 720).xy;
-	if (thing < 80)
-	{
-		return ((float4((float3(color.r, color.g, color.b) * exposure), 1)) + (realColor * (1.1)));	
-	}
-	else
-	{
-		return tex2D(ColorSampler, texCoord.xy);
-	}
-	
-
-	//return tex2D(UserMapSampler, tc.xy);
+	return ((float4((float3(color.r, color.g, color.b) * exposure), 1)) + (realColor * (1.1)));	
 }
 
 technique Technique1
