@@ -99,26 +99,11 @@ namespace MultipleCrepuscularTest1
             MultiMap = new RenderTarget2D(GraphicsDevice, 1280, 720);
             OcclusionMap = new RenderTarget2D(GraphicsDevice, 1280, 720);
             
-            //ORIGINAL
-            //CrepVertices = new VertexPositionColorTexture[4];
-            //CrepVertices[0] = new VertexPositionColorTexture(new Vector3(-1, 1, 0), Color.White, new Vector2(0, 0));
-            //CrepVertices[1] = new VertexPositionColorTexture(new Vector3(1, 1, 0), Color.White, new Vector2(1, 0));
-            //CrepVertices[2] = new VertexPositionColorTexture(new Vector3(-1, -1, 0), Color.White, new Vector2(0, 1));
-            //CrepVertices[3] = new VertexPositionColorTexture(new Vector3(1, -1, 0), Color.White, new Vector2(1, 1));
-
-            //WITHOUT PROJECTION TOP LEFT CORNER
-            //CrepVertices = new VertexPositionColorTexture[4];
-            //CrepVertices[0] = new VertexPositionColorTexture(new Vector3(-1, 1, 0), Color.White, new Vector2(0, 0));
-            //CrepVertices[1] = new VertexPositionColorTexture(new Vector3(0, 1, 0), Color.White, new Vector2(1, 0));
-            //CrepVertices[2] = new VertexPositionColorTexture(new Vector3(-1, 0, 0), Color.White, new Vector2(0, 1));
-            //CrepVertices[3] = new VertexPositionColorTexture(new Vector3(0, 0, 0), Color.White, new Vector2(1, 1));
-
             CrepVertices = new VertexPositionColorTexture[4];
             CrepVertices[0] = new VertexPositionColorTexture(new Vector3(0, 0, 0), Color.White, new Vector2(0, 0));
             CrepVertices[1] = new VertexPositionColorTexture(new Vector3(1280, 0, 0), Color.White, new Vector2(1, 0));
             CrepVertices[2] = new VertexPositionColorTexture(new Vector3(0, 720, 0), Color.White, new Vector2(0, 1));
             CrepVertices[3] = new VertexPositionColorTexture(new Vector3(1280, 720, 0), Color.White, new Vector2(1, 1));
-
 
             Projection = Matrix.CreateOrthographicOffCenter(0, 1280, 720, 0, -10, 10);
 
@@ -193,23 +178,11 @@ namespace MultipleCrepuscularTest1
                 CrepVertices[1].Position = new Vector3(light.Position.X + Flare.Width, light.Position.Y, 0);
                 CrepVertices[2].Position = new Vector3(light.Position.X, light.Position.Y + Flare.Height, 0);
                 CrepVertices[3].Position = new Vector3(light.Position.X + Flare.Width, light.Position.Y + Flare.Height, 0);
-
-
+                
                 GraphicsDevice.BlendState = BlendBlack;
                 GraphicsDevice.RasterizerState = RasterizerState.CullNone;
                 GraphicsDevice.DrawUserPrimitives(PrimitiveType.TriangleStrip, CrepVertices, 0, 2);
             }
-
-            //for (int i = 0; i < 1; i++)
-            //{
-            //    Effect1.Parameters["ColorMap"].SetValue(Flare);
-            //    Effect1.Parameters["Projection"].SetValue(Projection);
-            //    Effect1.CurrentTechnique.Passes[0].Apply();
-
-            //    GraphicsDevice.BlendState = BlendBlack;
-            //    GraphicsDevice.RasterizerState = RasterizerState.CullNone;
-            //    GraphicsDevice.DrawUserPrimitives(PrimitiveType.TriangleStrip, CrepVertices, 0, 2);
-            //}
             #endregion
 
             #region BackBuffer
