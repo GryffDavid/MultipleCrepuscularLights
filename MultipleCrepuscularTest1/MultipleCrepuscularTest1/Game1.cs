@@ -174,15 +174,21 @@ namespace MultipleCrepuscularTest1
                 Effect1.Parameters["Projection"].SetValue(Projection);
                 Effect1.CurrentTechnique.Passes[0].Apply();
 
-                CrepVertices[0].Position = new Vector3(light.Position.X, light.Position.Y, 0);
-                CrepVertices[1].Position = new Vector3(light.Position.X + Flare.Width, light.Position.Y, 0);
-                CrepVertices[2].Position = new Vector3(light.Position.X, light.Position.Y + Flare.Height, 0);
-                CrepVertices[3].Position = new Vector3(light.Position.X + Flare.Width, light.Position.Y + Flare.Height, 0);
+                Vector2 halfSize = new Vector2(Flare.Width / 2, Flare.Height / 2);
+
+                CrepVertices[0].Position = new Vector3(light.Position.X - halfSize.X, light.Position.Y - halfSize.Y, 0);
+                CrepVertices[1].Position = new Vector3(light.Position.X + halfSize.X, light.Position.Y - halfSize.Y, 0);
+                CrepVertices[2].Position = new Vector3(light.Position.X - halfSize.X, light.Position.Y + halfSize.Y, 0);
+                CrepVertices[3].Position = new Vector3(light.Position.X + halfSize.X, light.Position.Y + halfSize.Y, 0);
                 
                 GraphicsDevice.BlendState = BlendBlack;
                 GraphicsDevice.RasterizerState = RasterizerState.CullNone;
                 GraphicsDevice.DrawUserPrimitives(PrimitiveType.TriangleStrip, CrepVertices, 0, 2);
             }
+
+            spriteBatch.Begin();
+            spriteBatch.Draw(OcclusionMap, OcclusionMap.Bounds, Color.White);
+            spriteBatch.End();
             #endregion
 
             #region BackBuffer
