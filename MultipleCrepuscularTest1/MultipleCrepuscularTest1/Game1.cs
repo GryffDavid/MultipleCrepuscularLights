@@ -100,6 +100,15 @@ namespace MultipleCrepuscularTest1
                 Weight = 0.2358767f
             });
 
+            CrepLightList.Add(new CrepuscularLight()
+            {
+                Position = new Vector2(400, 600),
+                Decay = 0.9999f,
+                Exposure = 0.23f,
+                Density = 0.826f,
+                Weight = 0.5358767f
+            });
+
             CrepuscularEffect = Content.Load<Effect>("Crepuscular");
             CrepuscularEffect.Parameters["Projection"].SetValue(Projection);
 
@@ -166,9 +175,11 @@ namespace MultipleCrepuscularTest1
             GraphicsDevice.SetRenderTarget(CrepuscularColorMap);
             GraphicsDevice.Clear(Color.Transparent);
             spriteBatch.Begin();
+            spriteBatch.Draw(Background, Background.Bounds, Color.White);
+
             foreach (Sprite sprite in SpriteList)
             {
-                sprite.Draw(spriteBatch, Color.MediumPurple);
+                sprite.Draw(spriteBatch, Color.Black);
             }
             spriteBatch.End(); 
             #endregion
