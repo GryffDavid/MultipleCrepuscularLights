@@ -66,16 +66,16 @@ namespace MultipleCrepuscularTest1
 
             CrepLightList.Add(new CrepuscularLight()
             {
-                Position = new Vector2(1280 / 2, 720 / 2),
+                Position = new Vector2(200, 200),
                 Decay = 0.9999f,
                 Exposure = 0.23f,
                 Density = 0.826f,
-                Weight = 0.5358767f
+                Weight = 0.2358767f
             });
 
             CrepLightList.Add(new CrepuscularLight()
             {
-                Position = new Vector2(200, 200),
+                Position = new Vector2(200, 150),
                 Decay = 0.9999f,
                 Exposure = 0.23f,
                 Density = 0.826f,
@@ -91,23 +91,35 @@ namespace MultipleCrepuscularTest1
                 Weight = 0.2358767f
             });
 
-            CrepLightList.Add(new CrepuscularLight()
-            {
-                Position = new Vector2(800, 100),
-                Decay = 0.9999f,
-                Exposure = 0.23f,
-                Density = 0.826f,
-                Weight = 0.2358767f
-            });
+            //CrepLightList.Add(new CrepuscularLight()
+            //{
+            //    Position = new Vector2(800, 100),
+            //    Decay = 0.9999f,
+            //    Exposure = 0.23f,
+            //    Density = 0.826f,
+            //    Weight = 0.2358767f
+            //});
 
-            CrepLightList.Add(new CrepuscularLight()
-            {
-                Position = new Vector2(400, 600),
-                Decay = 0.9999f,
-                Exposure = 0.23f,
-                Density = 0.826f,
-                Weight = 0.5358767f
-            });
+            //CrepLightList.Add(new CrepuscularLight()
+            //{
+            //    Position = new Vector2(400, 600),
+            //    Decay = 0.9999f,
+            //    Exposure = 0.23f,
+            //    Density = 0.826f,
+            //    Weight = 0.5358767f
+            //});
+
+            //for (int i = 0; i < 10; i++)
+            //{
+            //    CrepLightList.Add(new CrepuscularLight()
+            //    {
+            //        Position = new Vector2(Random.Next(0, 1280), Random.Next(0, 720)),
+            //        Decay = 0.9999f,
+            //        Exposure = 0.23f,
+            //        Density = 0.826f,
+            //        Weight = 0.5358767f
+            //    });
+            //}
 
             CrepuscularEffect = Content.Load<Effect>("Crepuscular");
             CrepuscularEffect.Parameters["Projection"].SetValue(Projection);
@@ -175,7 +187,7 @@ namespace MultipleCrepuscularTest1
             GraphicsDevice.SetRenderTarget(CrepuscularColorMap);
             GraphicsDevice.Clear(Color.Transparent);
             spriteBatch.Begin();
-            spriteBatch.Draw(Background, Background.Bounds, Color.White);
+            spriteBatch.Draw(Background, Background.Bounds, Color.Gray);
 
             foreach (Sprite sprite in SpriteList)
             {
@@ -187,6 +199,9 @@ namespace MultipleCrepuscularTest1
 
             GraphicsDevice.SetRenderTarget(Buffer2);
             GraphicsDevice.Clear(Color.Transparent);
+
+            CrepuscularEffect.Parameters["ColorMap"].SetValue(CrepuscularColorMap);
+            CrepuscularEffect.Parameters["OccMap"].SetValue(OcclusionMap);
 
             foreach (CrepuscularLight light in CrepLightList)
             {
@@ -209,9 +224,7 @@ namespace MultipleCrepuscularTest1
                     CrepuscularEffect.Parameters["decay"].SetValue(light.Decay);
                     CrepuscularEffect.Parameters["exposure"].SetValue(light.Exposure);
                     CrepuscularEffect.Parameters["density"].SetValue(light.Density);
-                    CrepuscularEffect.Parameters["weight"].SetValue(light.Weight);
-                    CrepuscularEffect.Parameters["ColorMap"].SetValue(CrepuscularColorMap);
-                    CrepuscularEffect.Parameters["OccMap"].SetValue(OcclusionMap);
+                    CrepuscularEffect.Parameters["weight"].SetValue(light.Weight);                   
 
                     spriteBatch.Begin(SpriteSortMode.Immediate, BlendBlack);
                     CrepuscularEffect.CurrentTechnique.Passes[0].Apply();

@@ -19,16 +19,17 @@ sampler OccMapSampler = sampler_state
         Texture = <OccMap>;     
 };
 
-
 float2 LightPosition = float2(0.51, 0.5);
 float decay= 0.9999;
-float exposure=0.23;
+float exposure=0.13;
 float density=0.826;
 float weight=0.358767;
-const int NUM_SAMPLES = 64;
+const int NUM_SAMPLES = 48;
 
 float2 offset = float2(0.5/1280.0, 0.5/720.0);
 
+//THIS HAS BEEN COPY-PASTED AND THEN MODIFIED FROM VERSION 2.
+//NOT THE SAME AS VERSION 18 OR 17
 float4 PixelShaderFunction(float2 texCoord : TEXCOORD0) : COLOR0
 {
 	float2 tc = texCoord.xy;
@@ -36,14 +37,13 @@ float4 PixelShaderFunction(float2 texCoord : TEXCOORD0) : COLOR0
 	deltaTexCoord *= 1.0 / float(NUM_SAMPLES) * density;
 	float illuminationDecay = 1.0;
 
-	float4 color = tex2D(UserMapSampler, texCoord) * 0.2;
-	color += tex2D(ColorSampler, texCoord);
-	//float4 color = float4(0, 0, 0, 1);
+	float4 color = tex2D(ColorSampler, tc.xy);// * 0.2;
+
 
 	for (int i = 0; i < NUM_SAMPLES; i++)
 	{
-		tc -= deltaTexCoord;
-		float4 sample = tex2D(OccMapSampler, tc) * tex2D(UserMapSampler, tc) * 0.2;
+		tc -= deltaTexCoord;	
+		float4 sample = tex2D(OccMapSampler, tc) * tex2D(UserMapSampler, tc) * 0.2;			
 		sample *= illuminationDecay * weight;
 		color += sample;//  * float4(1,0,0,1); Multiply by colour here to change light colour
 		illuminationDecay *= decay;
@@ -51,7 +51,7 @@ float4 PixelShaderFunction(float2 texCoord : TEXCOORD0) : COLOR0
 
 	float4 realColor = tex2D(ColorSampler, texCoord.xy + offset);
 
-	return float4(float3(color.r, color.g, color.b) * exposure, 1);	
+	return ((float4((float3(color.r, color.g, color.b) * exposure), 1)));// + (realColor * (1.1)));	
 }
 
 technique Technique1
