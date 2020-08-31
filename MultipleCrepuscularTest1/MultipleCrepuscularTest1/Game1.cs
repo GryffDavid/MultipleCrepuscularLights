@@ -171,10 +171,21 @@ namespace MultipleCrepuscularTest1
             foreach (CrepuscularLight light in CrepLightList)
             {
                 Effect1.Parameters["ColorMap"].SetValue(Flare);
+                Effect1.Parameters["OcclusionMap"].SetValue(OcclusionMap);
                 Effect1.Parameters["Projection"].SetValue(Projection);
+
+                CrepuscularEffect.Parameters["LightPosition"].SetValue(light.Position / new Vector2(1280, 720));
+                CrepuscularEffect.Parameters["decay"].SetValue(light.Decay);
+                CrepuscularEffect.Parameters["exposure"].SetValue(light.Exposure);
+                CrepuscularEffect.Parameters["density"].SetValue(light.Density);
+                CrepuscularEffect.Parameters["weight"].SetValue(light.Weight);
+                CrepuscularEffect.Parameters["ColorMap"].SetValue(CrepuscularColorMap);
+
                 Effect1.CurrentTechnique.Passes[0].Apply();
 
+                Vector2 lightSize = new Vector2(100, 100);
                 Vector2 halfSize = new Vector2(Flare.Width / 2, Flare.Height / 2);
+
 
                 CrepVertices[0].Position = new Vector3(light.Position.X - halfSize.X, light.Position.Y - halfSize.Y, 0);
                 CrepVertices[1].Position = new Vector3(light.Position.X + halfSize.X, light.Position.Y - halfSize.Y, 0);
@@ -186,14 +197,14 @@ namespace MultipleCrepuscularTest1
                 GraphicsDevice.DrawUserPrimitives(PrimitiveType.TriangleStrip, CrepVertices, 0, 2);
             }
 
-            spriteBatch.Begin();
-            spriteBatch.Draw(OcclusionMap, OcclusionMap.Bounds, Color.White);
-            spriteBatch.End();
+            //spriteBatch.Begin();
+            //spriteBatch.Draw(OcclusionMap, OcclusionMap.Bounds, Color.White);
+            //spriteBatch.End();
             #endregion
 
             #region BackBuffer
             GraphicsDevice.SetRenderTarget(null);
-            GraphicsDevice.Clear(Color.Black);
+            GraphicsDevice.Clear(Color.CornflowerBlue);
 
             spriteBatch.Begin();
             spriteBatch.Draw(MultiMap, MultiMap.Bounds, Color.White);
