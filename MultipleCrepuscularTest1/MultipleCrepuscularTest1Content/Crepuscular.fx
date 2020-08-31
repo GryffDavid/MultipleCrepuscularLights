@@ -51,6 +51,10 @@ float4 PixelShaderFunction(float2 texCoord : TEXCOORD0) : COLOR0
 	float4 realColor = tex2D(ColorSampler, texCoord.xy + offset);
 
 	return ((float4((float3(color.r, color.g, color.b) * exposure), 1)) + (realColor * (1.1)));	
+	//return float4(1,0,0,0);
+	//return realColor;
+
+	return color;
 }
 
 technique Technique1
