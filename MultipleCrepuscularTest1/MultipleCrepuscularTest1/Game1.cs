@@ -197,12 +197,13 @@ namespace MultipleCrepuscularTest1
                 CrepuscularEffect.Parameters["ColorMap"].SetValue(CrepuscularColorMap);
 
                 spriteBatch.Begin(SpriteSortMode.Immediate, BlendBlack);
-
                 CrepuscularEffect.CurrentTechnique.Passes[0].Apply();
+                
+                //CrepuscularLightMap1 is a combination of the flare sprite with the OcclusionMap drawn on top
                 spriteBatch.Draw(CrepuscularLightMap1, CrepuscularLightMap1.Bounds, Color.White);
+                spriteBatch.End(); 
 
             }
-            spriteBatch.End(); 
             #endregion
 
             #region Buffer2
@@ -219,12 +220,13 @@ namespace MultipleCrepuscularTest1
                 CrepuscularEffect.Parameters["ColorMap"].SetValue(CrepuscularColorMap);
 
                 spriteBatch.Begin(SpriteSortMode.Immediate, BlendBlack);
-
                 CrepuscularEffect.CurrentTechnique.Passes[0].Apply();
+
+                //CrepuscularLightMap2 is a combination of the flare sprite with the OcclusionMap drawn on top
                 spriteBatch.Draw(CrepuscularLightMap2, CrepuscularLightMap2.Bounds, Color.White);
+                spriteBatch.End();
 
             }
-            spriteBatch.End();
             #endregion
 
 

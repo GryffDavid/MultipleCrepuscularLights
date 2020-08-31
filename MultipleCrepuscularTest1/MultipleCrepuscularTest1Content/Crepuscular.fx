@@ -18,7 +18,7 @@ float decay= 0.9999;
 float exposure=0.23;
 float density=0.826;
 float weight=0.358767;
-const int NUM_SAMPLES = 120;
+const int NUM_SAMPLES = 64;
 
 float2 offset = float2(0.5/1280.0, 0.5/720.0);
 
